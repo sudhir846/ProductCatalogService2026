@@ -4,16 +4,11 @@ import org.example.productcatalogservice.clients.FakestoreAPIClient;
 import org.example.productcatalogservice.dtos.FakestoreProductDto;
 import org.example.productcatalogservice.exceptions.ProductNotExistException;
 import org.example.productcatalogservice.models.Product;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +41,22 @@ public class FakestoreProductService implements IProductService {
 
         List<Product> products = new ArrayList<>();
 
-        ResponseEntity<FakestoreProductDto[]> repsonse = fakestoreAPIClient.requestForEntity(
+        ResponseEntity<FakestoreProductDto[]> response = fakestoreAPIClient.requestForEntity(
                         HttpMethod.GET,
-                        null,
                         "https://fakestoreapi.com/products",
+                        null,
                         FakestoreProductDto[].class
                 );
 
-        if(repsonse.getBody() != null && repsonse.getStatusCode().equals(HttpStatusCode.valueOf(200))) {
+        if(response.getBody() != null && response.getStatusCode().equals(HttpStatusCode.valueOf(200))) {
 
-            for(FakestoreProductDto fakestoreProductDto : repsonse.getBody()) {
+            for(FakestoreProductDto fakestoreProductDto : response.getBody()) {
                 products.add(fakestoreProductDto.toProduct());
             }
+
             return products;
         }
+
         return null;
     }
 
