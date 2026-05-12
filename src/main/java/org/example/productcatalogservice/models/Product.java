@@ -3,6 +3,7 @@ package org.example.productcatalogservice.models;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.productcatalogservice.dtos.CategoryDto;
+import org.example.productcatalogservice.dtos.FakestoreProductDto;
 import org.example.productcatalogservice.dtos.ProductDto;
 
 @Getter
@@ -31,6 +32,19 @@ public class Product extends BaseModel {
         productDto.setCategory(categoryDto);
 
         return productDto;
+    }
+
+    public FakestoreProductDto toFaketoreProductDto() {
+        FakestoreProductDto fakestoreProductDto = new FakestoreProductDto();
+
+        fakestoreProductDto.setId(this.getId());
+        fakestoreProductDto.setTitle(this.name);
+        fakestoreProductDto.setPrice(this.price);
+        fakestoreProductDto.setDescription(this.description);
+        fakestoreProductDto.setImage(this.imageUrl);
+        fakestoreProductDto.setCategory(this.category.getName());
+
+        return fakestoreProductDto;
     }
 }
 
